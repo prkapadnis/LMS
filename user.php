@@ -40,10 +40,41 @@ include "session.php";
         <a href="request_for_book.php" class="w3-bar-item w3-button w3-center"> <b> Request a Book </b> </a>
         <a href="bookAvailableForUser.php" class="w3-bar-item w3-button w3-center"> <b> Available Books </b> </a>
         <a href="MagzineAvailableForUser.php" class="w3-bar-item w3-button w3-center"> <b> Available Magzines </b> </a>
+        <a href="myBooks.php" class="w3-bar-item w3-button w3-center"> <b> My Books </b> </a>
+        <a href="myMagzine.php" class="w3-bar-item w3-button w3-center"> <b> My Magzine </b> </a>
     </div>
     <ul class="w3-navbar w3-green">
         <li class="w3-right w3-green"> <a href="logOut.php"> Log Out </a> </li>
         <li class="w3-right w3-green"> <a href="reset_password.php"> Reset Password </a> </li>
     </ul>
-    </body>
-	</html>
+    <div style="margin-left:20%">
+        <h1> My Books </h1>
+            <table class="w3-table" style="text-align:center;">
+            <th> Name of Book </th>
+            <th> Requested Date </th>
+            <th> Given Date </th>
+            <th> Status </th>
+            <?php
+            $conn = mysqli_connect("localhost", "root", "", "library");
+            $user = $p;
+            $query = "select * from request_for_book where username = '$user' && Status = 'Delivered'" ;
+            $result = mysqli_query($conn, $query);
+            if (mysqli_num_rows($result) > 0) {
+                while ($row = mysqli_fetch_array($result)) {
+                    $i = $row['Id'];
+                    echo "
+                <tr> 
+			    <td>" . $row['nameOfBook'] . "</td>  
+			    <td>" . $row['issueDate'] . "</td>
+			    <td>" . $row['GivenDate'] . "</td>
+			    <td>
+                        <a class='w3-btn w3-round-xxlarge' href='return.php?Id=$i'  > Return </a> </td>
+			    </tr>
+			    ";
+                }
+            }
+			    echo "
+                </table>
+                </div>
+                 </body> ";
+            ?>
